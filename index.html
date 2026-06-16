@@ -55,28 +55,37 @@
         .edition-bar {
             border-top: var(--news-border);
             border-bottom: var(--news-border);
-            padding: 5px 0;
+            padding: 6px 0;
             margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allows sections to cleanly wrap on ultra-small screens */
+            gap: 10px;
             font-size: 0.75rem;
             text-transform: uppercase;
             font-weight: bold;
             letter-spacing: 1px;
         }
 
+        .edition-bar > span {
+            flex: 1 1 auto;
+            text-align: center;
+        }
+
         h1 {
             font-family: 'UnifrakturMaguntia', serif;
-            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-size: clamp(2.5rem, 8vw, 5.5rem); /* Dynamically scales font sizes based on screen real estate */
             font-weight: 400;
             line-height: 1;
             color: var(--ink-black);
+            word-wrap: break-word;
         }
 
         .motto {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: 1rem;
+            font-size: clamp(0.85rem, 2vw, 1rem);
             color: var(--faded-ink);
             margin-top: 5px;
         }
@@ -98,15 +107,39 @@
             grid-column: span 4;
         }
 
-        @media (max-width: 850px) {
-            .article, .classifieds { grid-column: span 12; border-right: none; padding-right: 0; }
+        /* Responsive Breakpoint for Main Structure */
+        @media (max-width: 900px) {
+            .article {
+                grid-column: span 12;
+                border-right: none;
+                padding-right: 0;
+                border-bottom: var(--news-border);
+                padding-bottom: 20px;
+                margin-bottom: 10px;
+            }
+            .classifieds {
+                grid-column: span 12;
+            }
+        }
+
+        /* Secondary nested grids */
+        .inner-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 650px) {
+            .inner-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Headline Styles */
         h2 {
             font-family: 'Playfair Display', serif;
             font-weight: 900;
-            font-size: 2.2rem;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
             line-height: 1.1;
             letter-spacing: -0.5px;
             margin-bottom: 10px;
@@ -134,14 +167,24 @@
             text-align: center;
         }
 
+        /* RESPONSIVE IMAGE CONTROLS */
         .daguerreotype-frame img {
             width: 100%;
             height: auto;
-            max-height: 280px;
+            max-width: 100%;
+            max-height: 320px;
             object-fit: cover;
             /* Pure vintage ink profile rendering */
             filter: grayscale(100%) contrast(140%) brightness(95%);
             mix-blend-mode: multiply;
+        }
+
+        @media (max-width: 900px) {
+            .daguerreotype-frame {
+                max-width: 280px; /* Centers and constraints size on tablet/desktop stacked screens */
+                margin-left: auto;
+                margin-right: auto;
+            }
         }
 
         .caption {
@@ -154,13 +197,17 @@
         /* Text Columns */
         .editorial-columns {
             columns: 2;
-            column-gap: 20px;
+            column-gap: 25px;
             font-size: 0.85rem;
             text-align: justify;
             color: var(--faded-ink);
         }
 
-        @media (max-width: 550px) { .editorial-columns { columns: 1; } }
+        @media (max-width: 600px) { 
+            .editorial-columns { 
+                columns: 1; 
+            } 
+        }
 
         .editorial-columns::first-letter {
             font-family: 'Playfair Display', serif;
@@ -178,6 +225,7 @@
             padding: 15px;
             margin-bottom: 20px;
             background: rgba(0,0,0,0.02);
+            word-wrap: break-word;
         }
 
         .notice-block:nth-child(even) {
@@ -198,7 +246,7 @@
             text-decoration: none;
             font-weight: bold;
             font-size: 0.85rem;
-            padding: 6px 0;
+            padding: 8px 0;
             border-bottom: 1px dashed var(--ink-black);
         }
         .vintage-links a:hover { color: var(--accent-crimson); }
@@ -236,7 +284,7 @@
             border: 3px solid var(--ink-black);
             max-width: 550px;
             width: 100%;
-            padding: 30px;
+            padding: 40px 30px 30px 30px;
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
@@ -273,8 +321,17 @@
             font-size: 0.8rem;
             font-weight: bold;
             text-transform: uppercase;
+            max-width: 100%;
+            text-align: center;
         }
         .wire-btn:hover { background: var(--accent-crimson); }
+
+        /* Media adjustments for padding layout scale */
+        @media (max-width: 600px) {
+            body { padding: 10px 5px; }
+            .broadsheet { padding: 15px; }
+            .news-grid { gap: 15px; }
+        }
 
         footer {
             margin-top: 20px;
@@ -298,7 +355,6 @@
             
             <div class="edition-bar">
                 <span>Vol. CXXVI No. 42</span>
-                <!-- LIVE DATE ELEMENT -->
                 <span id="live-press-date">Loading Edition Date...</span>
                 <span>Price: Two Cents</span>
             </div>
@@ -306,7 +362,6 @@
 
         <div class="news-grid">
             
-            <!-- Left Primary Column: Front Page Articles -->
             <div class="article">
                 <article style="margin-bottom: 30px;">
                     <h2>Srivastava Proposes New Computing Paradigms in Artificial Intelligence</h2>
@@ -317,41 +372,42 @@
                     </div>
                 </article>
 
-                <div class="news-grid" style="gap: 15px; border-top: var(--news-border); padding-top: 20px;">
-                    <div style="grid-column: span 6;">
-                        <h3>Latest Circular dispatches</h3>
-                        
-                        <div class="notice-block" style="cursor: pointer;" onclick="openModal('Public Issue Reporting Website', 'Developed a web-based complaint reporting platform using HTML, CSS, JavaScript, and MySQL. Implemented a real-time monitoring system to track complaint status and designed an optimized MySQL database backend for highly efficient issue management.', 'https://kshitizsrivastava29.github.io/project1_public_issue_reporting_website.io/')">
-                            <h4 style="font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 5px;">I. PUBLIC REGISTRY INDEX</h4>
-                            <p style="font-size: 0.8rem; color: var(--faded-ink);">A community complaint dashboard rendering operations live across local jurisdictions.</p>
-                            <span style="font-size: 0.7rem; font-weight: bold; color: var(--accent-crimson);">READ RECORD ➔</span>
+                <div style="border-top: var(--news-border); padding-top: 20px;">
+                    <div class="inner-grid">
+                        <div>
+                            <h3>Latest Circular dispatches</h3>
+                            
+                            <div class="notice-block" style="cursor: pointer;" onclick="openModal('Public Issue Reporting Website', 'Developed a web-based complaint reporting platform using HTML, CSS, JavaScript, and MySQL. Implemented a real-time monitoring system to track complaint status and designed an optimized MySQL database backend for highly efficient issue management.', 'https://kshitizsrivastava29.github.io/project1_public_issue_reporting_website.io/')">
+                                <h4 style="font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 5px;">I. PUBLIC REGISTRY INDEX</h4>
+                                <p style="font-size: 0.8rem; color: var(--faded-ink);">A community complaint dashboard rendering operations live across local jurisdictions.</p>
+                                <span style="font-size: 0.7rem; font-weight: bold; color: var(--accent-crimson);">READ RECORD ➔</span>
+                            </div>
+
+                            <div class="notice-block" style="cursor: pointer;" onclick="openModal('Notes Sharing Platform', 'Built a web-based notes sharing platform enabling students to upload, categorize, and search study materials collaboratively using HTML, CSS, and JavaScript.', 'https://github.com/kshitizSrivastava29')">
+                                <h4 style="font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 5px;">II. COMPENDIUM LEDGER</h4>
+                                <p style="font-size: 0.8rem; color: var(--faded-ink);">Collaborative file routing systems built completely native around academic categorization.</p>
+                                <span style="font-size: 0.7rem; font-weight: bold; color: var(--accent-crimson);">READ RECORD ➔</span>
+                            </div>
                         </div>
 
-                        <div class="notice-block" style="cursor: pointer;" onclick="openModal('Notes Sharing Platform', 'Built a web-based notes sharing platform enabling students to upload, categorize, and search study materials collaboratively using HTML, CSS, and JavaScript.', 'https://github.com/kshitizSrivastava29')">
-                            <h4 style="font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 5px;">II. COMPENDIUM LEDGER</h4>
-                            <p style="font-size: 0.8rem; color: var(--faded-ink);">Collaborative file routing systems built completely native around academic categorization.</p>
-                            <span style="font-size: 0.7rem; font-weight: bold; color: var(--accent-crimson);">READ RECORD ➔</span>
-                        </div>
-                    </div>
+                        <div>
+                            <h3>Supplemental Prints</h3>
+                            <div class="notice-block" style="cursor: pointer;" onclick="openModal('Portfolio Website', 'Designed and developed a responsive and interactive custom personal portfolio website to showcase dynamic projects and engineering skillsets.', 'https://github.com/kshitizSrivastava29')">
+                                <h4 style="font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 5px;">III. EDITORIAL PORTFOLIO</h4>
+                                <p style="font-size: 0.8rem; color: var(--faded-ink);">A customized broadsheet layout projecting records of scholastic engineering capabilities.</p>
+                                <span style="font-size: 0.7rem; font-weight: bold; color: var(--accent-crimson);">READ RECORD ➔</span>
+                            </div>
 
-                    <div style="grid-column: span 6;">
-                        <h3>Supplemental Prints</h3>
-                        <div class="notice-block" style="cursor: pointer;" onclick="openModal('Portfolio Website', 'Designed and developed a responsive and interactive custom personal portfolio website to showcase dynamic projects and engineering skillsets.', 'https://github.com/kshitizSrivastava29')">
-                            <h4 style="font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 5px;">III. EDITORIAL PORTFOLIO</h4>
-                            <p style="font-size: 0.8rem; color: var(--faded-ink);">A customized broadsheet layout projecting records of scholastic engineering capabilities.</p>
-                            <span style="font-size: 0.7rem; font-weight: bold; color: var(--accent-crimson);">READ RECORD ➔</span>
-                        </div>
-
-                        <div class="daguerreotype-frame" style="margin: 0;">
-                            <div style="border: 1px dashed rgba(0,0,0,0.2); padding: 15px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem;">
-                                "The analytical engine weaves algebraic patterns just as the Jacquard loom weaves flowers."
+                            <div class="daguerreotype-frame" style="margin: 0;">
+                                <div style="border: 1px dashed rgba(0,0,0,0.2); padding: 15px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem;">
+                                    "The analytical engine weaves algebraic patterns just as the Jacquard loom weaves flowers."
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Column: Classifieds, Ledger, and Meta -->
             <div class="classifieds">
                 
                 <h3 style="text-align: center; border-bottom: 4px double var(--ink-black);">The Classified Bulletins</h3>
@@ -394,15 +450,14 @@
 
             </div>
 
-            <!-- Lower Ledger Broad Rows -->
             <div class="span-12" style="grid-column: span 12; border-top: var(--double-border); padding-top: 15px;">
                 <h3 style="border: none; margin: 0 0 10px 0; font-size: 1.1rem;">Verified Field Achievements &amp; Press Dispatches</h3>
-                <div class="news-grid" style="gap: 15px;">
-                    <div class="notice-block" style="grid-column: span 6; margin: 0;">
+                <div class="inner-grid">
+                    <div class="notice-block" style="margin: 0;">
                         <div class="bulletin-row"><b>[ITEM 01]</b> Resolved 200+ mathematical properties cleanly within Leetcode logic engines.</div>
                         <div class="bulletin-row"><b>[ITEM 02]</b> Logged 70+ validation test assertions inside GeeksforGeeks profiles.</div>
                     </div>
-                    <div class="notice-block" style="grid-column: span 6; margin: 0;">
+                    <div class="notice-block" style="margin: 0;">
                         <div class="bulletin-row"><b>[ITEM 03]</b> Prepared custom automated pipelines for Smart India Hackathon (SIH) 2025 orbit.</div>
                         <div class="bulletin-row"><b>[ITEM 04]</b> Granted official validation access clearance for the Daksh Hackathon cluster.</div>
                     </div>
@@ -417,7 +472,6 @@
 
     </div>
 
-    <!-- Telegraph Wire Modal Window -->
     <div id="projectModal" class="telegraph-overlay" onclick="closeModal()">
         <div class="telegram-box" onclick="event.stopPropagation()">
             <button class="close-press" onclick="closeModal()">✕ CLOSE</button>
