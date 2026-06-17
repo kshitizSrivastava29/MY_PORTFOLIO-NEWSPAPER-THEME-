@@ -251,6 +251,30 @@
         }
         .vintage-links a:hover { color: var(--accent-crimson); }
 
+        /* Official Print Action Button for Resume */
+        .action-print-btn {
+            display: block;
+            margin-top: 15px;
+            padding: 10px;
+            background: var(--ink-black);
+            color: var(--aged-paper);
+            text-align: center;
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            border: 2px solid var(--ink-black);
+            transition: all 0.2s ease;
+            letter-spacing: 0.5px;
+        }
+        
+        .action-print-btn:hover {
+            background: var(--accent-crimson);
+            border-color: var(--accent-crimson);
+            color: #fff;
+        }
+
         /* Print Typography Badges */
         .type-cluster {
             display: flex;
@@ -383,7 +407,7 @@
                                 <span style="font-size: 0.7rem; font-weight: bold; color: var(--accent-crimson);">READ RECORD ➔</span>
                             </div>
 
-                            <div class="notice-block" style="cursor: pointer;" onclick="openModal('Notes Sharing Platform', 'Built a web-based notes sharing platform enabling students to upload, categorize, and search study materials collaboratively using HTML, CSS, and JavaScript.', 'https://kshitizsrivastava29.github.io/Notes_Sharing_Platform/')">
+                            <div class="notice-block" style="cursor: pointer;" onclick="openModal('Notes Sharing Platform', 'Built a web-based notes sharing platform enabling students to upload, categorize, and search study materials collaboratively using HTML, CSS, and JavaScript.', 'https://github.com/kshitizSrivastava29')">
                                 <h4 style="font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 5px;">II. COMPENDIUM LEDGER</h4>
                                 <p style="font-size: 0.8rem; color: var(--faded-ink);">Collaborative file routing systems built completely native around academic categorization.</p>
                                 <span style="font-size: 0.7rem; font-weight: bold; color: var(--accent-crimson);">READ RECORD ➔</span>
@@ -424,6 +448,8 @@
                         <a href="https://github.com/kshitizSrivastava29" target="_blank">🖍 GitHub Archive Trunk</a>
                         <a href="https://leetcode.com/u/Kshitiz_Srivastava05/" target="_blank">🖎 Leetcode Log Ledger</a>
                     </div>
+                    <!-- Official Resume Request Button inserted here for symmetry -->
+                    <a href="My_Resume (5).pdf" download class="action-print-btn">🖺 Order Profile Print</a>
                 </div>
 
                 <div class="notice-block">
